@@ -20,15 +20,15 @@ const Workout = sequelize.define(
         type:{
             type: new DataTypes.ENUM,
             allowNull: false,
-            values: ['cardiovascular','strength_training']
+            values: ['CARDIOVASCULAR','STRENGTH TRAINING']
         },
         duration:{
-            type: new DataTypes.INTEGER,
-            allowNull: false
+            type: new DataTypes.TIME,
+            allowNull: true
         },
         repetition:{
             type: new DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         weight:{
             type: new DataTypes.FLOAT,
@@ -38,6 +38,15 @@ const Workout = sequelize.define(
             type: new DataTypes.FLOAT,
             allowNull: false
         },
+    },
+    {
+        validate:{
+            pairValidation(){
+                if(this.duration === undefined && this.repetition === undefined){
+                    throw new Error("Duration or Repetition required")
+                }
+            }
+        }
     }
 )
 

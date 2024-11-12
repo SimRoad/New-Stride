@@ -1,25 +1,42 @@
 import { DataTypes } from "npm:sequelize"
+import User from "./users_model.ts";
 import sequelize from "../db_setup.ts";
 
 const Plan = sequelize.define(
     'Plan',{
-        workout_name: {
-            type: new DataTypes.STRING,
+        user_id:{
+            type: new DataTypes.INTEGER,
+            allowNull: false,
+            references:{
+                model: User,
+                key: 'id'
+            }
+        },
+        name: {
+            type: new DataTypes.STRING(50),
             allowNull: false
         },
-        workout_type: {
+        type: {
             type: new DataTypes.ENUM,
-            values: ['CARDIOVASCULAR','STRENGTH_TRAINING'],
+            values: ['CARDIOVASCULAR','STRENGTH TRAINING'],
             allowNull: false
         },
         duration: {
-            type: new DataTypes.INTEGER,
-            allowNull: false
+            type: new DataTypes.TIME,
+            allowNull: true
         },
         repetition: {
-            type: new DataTypes.INTEGER,
-            allowNull: false
+            type: new DataTypes.STRING(50),
+            allowNull: true
         },
+    },{
+        validate:{
+            pairValidation(){
+                if(this.duration === null && this.repetition === null){
+                    throw new Error("Duration or Repetition required")
+                }
+            }
+        }
     }
 )
 
