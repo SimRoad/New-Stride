@@ -5,7 +5,7 @@ import { Model } from "npm:sequelize"
 import User from "../models/users_model.ts"
 import Goal from "../models/goals_model.ts";
 import Plan from "../models/plans_model.ts";
-import modelAI from "../ai_setup.ts";
+import { promptPlan, AIResponse } from "../utils/ai_helper.ts";
 import sequelize from "../db_setup.ts";
 
 export const getUser = async (req:Request,res:Response)=>{
@@ -15,19 +15,10 @@ export const getUser = async (req:Request,res:Response)=>{
     }
 }
 
-const promptPlan = async (data)=>{
-    const prompt = `Create a list of exercises for a ${data.gender} with a height of ${data.height}centimeters and weight of ${data.weight}kilograms. `+
-    `This person is ${data.baseline_activity} when it comes to their daily life. `+
-    `The goal of working out is to ${data.main_goal} and have a weight goal of ${data.weight_goal}kilograms`
-    console.log(prompt)
-    return modelAI.generateContent(prompt)
-}
-
 export const createUser = async (req:Request,res:Response)=>{
     const data = req.body
     const transaction = await sequelize.transaction()
     try {
-        const plan = promptPlan(data)
         const user = await User.create({
             username: data.username,
             email: data.email,
@@ -39,6 +30,7 @@ export const createUser = async (req:Request,res:Response)=>{
         },{
             transaction: transaction
         })
+        data.user_id = user.id
         await Goal.create({
             user_id: user.id,
             main_goal: data.main_goal,
@@ -47,9 +39,10 @@ export const createUser = async (req:Request,res:Response)=>{
         },{
             transaction: transaction
         })
-        // await transaction.commit()
-        await transaction.rollback()
-        res.send((await plan).response.text())
+        const generatedPlans:AIResponse[] = await promptPlan(data)
+        await Plan.bulkCreate(generatedPlans,{validate:true,transaction:transaction})
+        await transaction.commit()
+        res.send(generatedPlans)
     } catch (error) {
         console.error(error)
         await transaction.rollback()
@@ -58,5 +51,11 @@ export const createUser = async (req:Request,res:Response)=>{
 }
 
 export const updateUser = (req:Request,res:Response)=>{
-    res.send("Not yet implemented")
+    const {id,...contents} = req.body
+    User.update(contents,{
+        where: {
+            id: id
+        }
+    })
+    res.send("Should be updated")
 }
