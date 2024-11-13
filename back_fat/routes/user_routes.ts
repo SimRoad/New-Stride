@@ -7,16 +7,17 @@ import { createWorkout, getWorkouts, updateWorkout } from "../controllers/workou
 
 const router = Router()
 
-router.get("/user/:id/plans",getPlans)
+router.get("/user/:id/plan",getPlans)
 
 router.get("/user/:id/goal",getGoal)
 
 router.get("/user/:id/workout/:number", getWorkouts)
+router.get("/user/:id/workout/", getWorkouts)
 router.post("/user/:id/workout", createWorkout)
 router.put("/user/:id/workout", updateWorkout)
 
 router.get("/user/:id",getUser)
-router.put("/user/:id", updateUser)
+router.put("/user", updateUser)
 router.post("/user", createUser)
 
 export default router
