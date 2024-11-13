@@ -36,14 +36,9 @@ export const createWorkout = (req:Request,res:Response)=>{
     }
 }
 
-export const updateWorkout = (req:Request,res:Response)=>{
+export const updateWorkout = async (req:Request,res:Response)=>{
     const {id,...contents} = req.body
-    const [rows] = Workout.update(contents,{
-        where:{
-            id:id
-        },
-        fields: Object.keys(contents)
-    })
+    const [rows] = await Workout.update(contents,{where:{id}})
     const {status,message} = updateMessage("Workouts",rows)
     res.status(status).send(new ResponseHelper(message,{rowsUpdated: rows}))
 }

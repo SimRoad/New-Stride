@@ -42,7 +42,7 @@ const Workout = sequelize.define(
     {
         validate:{
             pairValidation(){
-                if(this.duration === undefined && this.repetition === undefined){
+                if(this.duration === null && this.repetition === null){
                     throw new Error("Duration or Repetition required")
                 }
             }
