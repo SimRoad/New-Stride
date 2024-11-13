@@ -2,19 +2,14 @@
 import {Request, Response} from "npm:express";
 import Workout from "../models/workouts_model.ts"
 import { ResponseHelper, updateMessage } from "../utils/response.ts";
-
-const floorLimit = (limit:number)=>{
-    if(limit >= 50) return 50
-    if(limit >= 30) return 30
-    return 10
-}
+import { floorLimit } from "../utils/utils.ts";
 
 export const getWorkouts = async (req:Request,res:Response)=>{
     const limit = floorLimit(Number(req.params.number ?? 10))
     console.log(req.params.id)
     const workouts = await Workout.findAll({
         where:{
-            user_id: Number(req.params.id)
+            user_id: req.params.id
         },
         order:[['createdAt','DESC']],
         limit: limit
