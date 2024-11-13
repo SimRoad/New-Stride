@@ -49,13 +49,14 @@ export const createUser = async (req:Request,res:Response)=>{
 
 export const updateUser = async (req:Request,res:Response)=>{
     const {id,...contents} = req.body
-    contents.gender = contents.gender === "male"
+    contents.gender = contents.gender === "male" 
     const [rows] = await User.update(contents,{
         where: {
-            id: id
+            id: Number(id)
         },
         fields: Object.keys(contents)
     })
     const {status,message} = updateMessage("User",rows)
     res.status(status).send(new ResponseHelper(message,{rowsUpdated: rows}))
+    res.sendStatus(200)
 }
