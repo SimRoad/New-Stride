@@ -1,18 +1,15 @@
 // @deno-types="npm:@types/express"
 import {Request, Response} from "npm:express";
-// @deno-types="npm:@types/sequelize"
-import { Model } from "npm:sequelize"
 import User from "../models/users_model.ts"
 import Goal from "../models/goals_model.ts";
 import Plan from "../models/plans_model.ts";
 import { promptPlan, AIResponse } from "../utils/ai_helper.ts";
 import sequelize from "../db_setup.ts";
+import { ResponseHelper, updateMessage } from "../utils/response.ts";
 
 export const getUser = async (req:Request,res:Response)=>{
-    if(req.params.id){
-        const all = await User.findByPk(req.params.id)
-        res.send(all)
-    }
+    const user = await User.findOne({where:{id:req.params.id}})
+    res.status(200).send(user)
 }
 
 export const createUser = async (req:Request,res:Response)=>{
@@ -42,20 +39,23 @@ export const createUser = async (req:Request,res:Response)=>{
         const generatedPlans:AIResponse[] = await promptPlan(data)
         await Plan.bulkCreate(generatedPlans,{validate:true,transaction:transaction})
         await transaction.commit()
-        res.send(generatedPlans)
+        res.status(201).send(new ResponseHelper(`Sucessfully created user ${data.username}`,{id:user.id}))
     } catch (error) {
         console.error(error)
         await transaction.rollback()
-        res.send("Failed to create user")
+        res.status(500).send(new ResponseHelper("Failed to create user"))
     }
 }
 
-export const updateUser = (req:Request,res:Response)=>{
+export const updateUser = async (req:Request,res:Response)=>{
     const {id,...contents} = req.body
-    User.update(contents,{
+    contents.gender = contents.gender === "male"
+    const [rows] = await User.update(contents,{
         where: {
             id: id
-        }
+        },
+        fields: Object.keys(contents)
     })
-    res.send("Should be updated")
+    const {status,message} = updateMessage("User",rows)
+    res.status(status).send(new ResponseHelper(message,{rowsUpdated: rows}))
 }
