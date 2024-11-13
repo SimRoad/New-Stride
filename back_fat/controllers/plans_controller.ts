@@ -1,7 +1,6 @@
 // @deno-types="npm:@types/express"
 import {Request, Response} from "npm:express";
 import Plan from "../models/plans_model.ts"
-import {ResponseHelper} from "../utils/response.ts"
 import { Model } from "npm:sequelize";
 
 export const getPlans = async (req:Request,res:Response)=>{
