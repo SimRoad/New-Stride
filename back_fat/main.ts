@@ -8,6 +8,7 @@ import Workout from "./models/workouts_model.ts";
 import Plan from "./models/plans_model.ts";
 import UserRoutes from "./routes/user_routes.ts"
 import AuthRoutes from "./routes/user_routes.ts"
+import rateLimiter from "./middleware/rate_limiter.ts";
 
 User
 Goal
@@ -25,6 +26,7 @@ try {
 
 const app:express.Application = express()
 app.use(express.json())
+app.use(rateLimiter)
 app.use(UserRoutes)
 app.use(AuthRoutes)
 app.all('/',(req,res)=>{res.status(404).send("Page not found")})
