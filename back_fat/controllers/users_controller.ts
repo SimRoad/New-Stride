@@ -1,11 +1,14 @@
-// @deno-types="npm:@types/express"
+// @ts-types="npm:@types/express"
 import {Request, Response} from "npm:express";
+// @ts-types="npm:@types/bcrypt"
+import bcrypt from "npm:bcrypt"
 import User from "../models/users_model.ts"
 import Goal from "../models/goals_model.ts";
 import Plan from "../models/plans_model.ts";
 import { promptPlan, AIResponse } from "../utils/ai_helper.ts";
 import sequelize from "../db_setup.ts";
 import { ResponseHelper, updateMessage } from "../utils/response.ts";
+import { createToken,MAX_AGE } from "../utils/jwt.ts";
 
 export const getUser = async (req:Request,res:Response)=>{
     const user = await User.findOne({where:{id:req.params.id}})
@@ -15,11 +18,13 @@ export const getUser = async (req:Request,res:Response)=>{
 export const createUser = async (req:Request,res:Response)=>{
     const data = req.body
     const transaction = await sequelize.transaction()
+    const hashedPassword = await bcrypt.hash(data.password,10)
+    console.log(hashedPassword)
     try {
         const user = await User.create({
             username: data.username,
             email: data.email,
-            password: data.password,
+            password: hashedPassword,
             birth_date: data.birth_date,
             gender: data.gender === "male",
             height: data.height,
@@ -27,7 +32,9 @@ export const createUser = async (req:Request,res:Response)=>{
         },{
             transaction: transaction
         })
+        
         data.user_id = user.id
+
         await Goal.create({
             user_id: user.id,
             main_goal: data.main_goal,
@@ -36,9 +43,13 @@ export const createUser = async (req:Request,res:Response)=>{
         },{
             transaction: transaction
         })
+
         const generatedPlans:AIResponse[] = await promptPlan(data)
         await Plan.bulkCreate(generatedPlans,{validate:true,transaction:transaction})
+        
+        res.cookie('jwt',createToken(user.id),{httpOnly:true,maxAge:MAX_AGE * 1000})
         await transaction.commit()
+
         res.status(201).send(new ResponseHelper(`Sucessfully created user ${data.username}`,{id:user.id}))
     } catch (error) {
         console.error(error)
