@@ -1,4 +1,4 @@
-// @deno-types="npm:@types/express"
+// @ts-types="npm:@types/express"
 import {Router} from "npm:express";
 import { getUser, createUser, updateUser } from "../controllers/users_controller.ts";
 import { getPlans } from "../controllers/plans_controller.ts";

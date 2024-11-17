@@ -1,42 +1,44 @@
-import { DataTypes } from "npm:sequelize"
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey } from "npm:sequelize"
 import User from "./users_model.ts";
 import sequelize from "../db_setup.ts";
 
-const Plan = sequelize.define(
-    'Plan',{
-        user_id:{
-            type: new DataTypes.INTEGER,
-            allowNull: false,
-            references:{
-                model: User,
-                key: 'id'
-            }
-        },
-        name: {
-            type: new DataTypes.STRING(50),
-            allowNull: false
-        },
-        type: {
-            type: new DataTypes.ENUM,
-            values: ['CARDIOVASCULAR','STRENGTH TRAINING'],
-            allowNull: false
-        },
-        duration: {
-            type: new DataTypes.TIME,
-            allowNull: true
-        },
-        repetition: {
-            type: new DataTypes.STRING(50),
-            allowNull: true
-        },
+class Plan extends Model<InferAttributes<Plan>,InferCreationAttributes<Plan>>{
+    declare id: CreationOptional<number>
+    declare user_id:ForeignKey<User['id']>
+    declare name:string
+    declare type:string
+    declare duration:string | null
+    declare repetition:string | null
+    declare createdAt: CreationOptional<Date>
+    declare updatedAt: CreationOptional<Date>
+}
+
+Plan.init({
+    id:{
+        type: DataTypes.INTEGER,
+        autoIncrement:true,
+        primaryKey: true
+    },
+    user_id:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    name:{
+        type: DataTypes.STRING(50),
+        allowNull:false
+    },
+    type:{
+        type: DataTypes.ENUM,
+        allowNull:false,
+        values: ['CARDIOVASCULAR','STRENGTH TRAINING']
+    },
+    duration: DataTypes.TIME,
+    repetition: DataTypes.STRING(50),
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
     },{
-        validate:{
-            pairValidation(){
-                if(this.duration === null && this.repetition === null){
-                    throw new Error("Duration or Repetition required")
-                }
-            }
-        }
+        tableName: 'Plans',
+        sequelize
     }
 )
 

@@ -8,6 +8,6 @@ export class ResponseHelper{
 }
 
 export const updateMessage = (name:string,changes:number)=>{
-    if(changes !== 0) return {status:204,message: `${name} failed to update`}
+    if(changes === 0) return {status:204,message: `${name} failed to update`}
     else return {status:201,message: `${name} successfully updated`}
 }
