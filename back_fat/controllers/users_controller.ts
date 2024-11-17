@@ -5,7 +5,7 @@ import bcrypt from "npm:bcrypt"
 import User from "../models/users_model.ts"
 import Goal from "../models/goals_model.ts";
 import Plan from "../models/plans_model.ts";
-import { promptPlan, AIResponse } from "../utils/ai_helper.ts";
+import { promptPlan } from "../utils/ai_helper.ts";
 import sequelize from "../db_setup.ts";
 import { ResponseHelper, updateMessage } from "../utils/response.ts";
 import { createToken,MAX_AGE } from "../utils/jwt.ts";
@@ -19,9 +19,8 @@ export const createUser = async (req:Request,res:Response)=>{
     const data = req.body
     const transaction = await sequelize.transaction()
     const hashedPassword = await bcrypt.hash(data.password,10)
-    console.log(hashedPassword)
     try {
-        const user = await User.create({
+        const user = (await User.create({
             username: data.username,
             email: data.email,
             password: hashedPassword,
@@ -30,9 +29,9 @@ export const createUser = async (req:Request,res:Response)=>{
             height: data.height,
             weight: data.weight
         },{
-            transaction: transaction
-        })
-        
+            transaction
+        })).dataValues
+
         data.user_id = user.id
 
         await Goal.create({
@@ -41,11 +40,11 @@ export const createUser = async (req:Request,res:Response)=>{
             baseline_activity: data.baseline_activity,
             weight_goal: data.weight_goal
         },{
-            transaction: transaction
+            transaction
         })
 
-        const generatedPlans:AIResponse[] = await promptPlan(data)
-        await Plan.bulkCreate(generatedPlans,{validate:true,transaction:transaction})
+        const generatedPlans = await promptPlan(data)
+        await Plan.bulkCreate(generatedPlans,{validate:true,transaction})
         
         res.cookie('jwt',createToken(user.id),{httpOnly:true,maxAge:MAX_AGE * 1000})
         await transaction.commit()

@@ -1,4 +1,4 @@
-// @deno-types="npm:@types/express"
+// @ts-types="npm:@types/express"
 import {Request, Response} from "npm:express";
 import Goal from "../models/goals_model.ts"
 import { ResponseHelper, updateMessage } from "../utils/response.ts";

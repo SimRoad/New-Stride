@@ -1,4 +1,4 @@
-// @deno-types="npm:@types/express"
+// @ts-types="npm:@types/express"
 import {Request, Response} from "npm:express";
 import Workout from "../models/workouts_model.ts"
 import { ResponseHelper, updateMessage } from "../utils/response.ts";
@@ -17,10 +17,10 @@ export const getWorkouts = async (req:Request,res:Response)=>{
     res.status(200).send(workouts)
 }
 
-export const createWorkout = (req:Request,res:Response)=>{
+export const createWorkout = async (req:Request,res:Response)=>{
     const {name,user_id,type,duration,repetition,weight,intensity} = req.body
     try {
-        const workout = Workout.create({
+        const workout = await Workout.create({
             user_id: user_id,
             name: name,
             type: type,

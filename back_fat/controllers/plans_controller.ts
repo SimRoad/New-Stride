@@ -1,4 +1,4 @@
-// @deno-types="npm:@types/express"
+// @ts-types="npm:@types/express"
 import {Request, Response} from "npm:express";
 import Plan from "../models/plans_model.ts"
 import { Model } from "npm:sequelize";
