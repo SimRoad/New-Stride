@@ -25,7 +25,7 @@ export const createUser = async (req:Request,res:Response)=>{
             email: data.email,
             password: hashedPassword,
             birth_date: data.birth_date,
-            gender: data.gender === "male",
+            is_male: data.gender === "male",
             height: data.height,
             weight: data.weight
         },{

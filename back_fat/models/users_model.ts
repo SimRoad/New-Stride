@@ -10,7 +10,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>>{
     declare birth_date:Date
     declare height:number
     declare weight:number
-    declare gender:boolean
+    declare is_male:boolean
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -27,6 +27,7 @@ User.init({
     },
     email:{
         type: new DataTypes.STRING(50),
+        unique: true,
         allowNull: false
     },
     password:{
@@ -45,7 +46,7 @@ User.init({
         type: new DataTypes.FLOAT,
         allowNull: false
     },
-    gender:{
+    is_male:{
         type: new DataTypes.BOOLEAN,
         allowNull: false
     },

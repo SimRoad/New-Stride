@@ -22,8 +22,9 @@ export const promptPlan = (data:Data)=>{
 {
     "name": string (max 5 words),
     "type": enum("CARDIOVASCULAR","STRENGTH TRAINING"),
-    "duration": string(HH:mm:ss)
-    "repetition": string(do not include time)
+    "duration": string(HH:mm:ss),
+    "repetition": int,
+    "sets": int
 }]`+
     `\nHere is the person's information:`+
     `\nAge: ${new Date().getFullYear() - new Date(data.birth_date).getFullYear()} years old`+
@@ -43,7 +44,7 @@ const toJSON = (user_id:number,res:Promise<GenerateContentResult>):Promise<Plan[
             for(const exercise of result){
                 exercise.user_id = user_id
                 if(exercise.duration === "N/A" || exercise.duration === "00:00:00")exercise.duration = null
-                if(exercise.repetition === "N/A") exercise.repetition = null
+                if(exercise.repetition === 0) exercise.repetition = null
             }
             resolve(result)
             setTimeout(()=>reject("Timed Out"),15000)

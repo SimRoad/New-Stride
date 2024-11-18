@@ -8,7 +8,8 @@ class Plan extends Model<InferAttributes<Plan>,InferCreationAttributes<Plan>>{
     declare name:string
     declare type:string
     declare duration:string | null
-    declare repetition:string | null
+    declare repetition:number | null
+    declare sets:number | null
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -33,7 +34,8 @@ Plan.init({
         values: ['CARDIOVASCULAR','STRENGTH TRAINING']
     },
     duration: DataTypes.TIME,
-    repetition: DataTypes.STRING(50),
+    repetition: DataTypes.INTEGER,
+    sets: DataTypes.INTEGER,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
     },{
