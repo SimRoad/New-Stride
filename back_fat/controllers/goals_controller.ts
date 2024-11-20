@@ -5,6 +5,9 @@ import { ResponseHelper, updateMessage } from "../utils/response.ts";
 
 export const getGoal = async (req:Request,res:Response)=>{
     const goal = await Goal.findOne({
+        attributes:{
+            exclude: ['id','user_id','createdAt','updatedAt']
+        },
         where:{
             user_id: req.body.id
         }

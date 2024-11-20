@@ -12,7 +12,12 @@ import { createToken,MAX_AGE } from "../utils/jwt.ts";
 import { isMale } from "../utils/utils.ts";
 
 export const getUser = async (req:Request,res:Response)=>{
-    const user = await User.findOne({where:{id:req.body.id}})
+    const user = await User.findOne({
+        attributes:{
+            exclude: ['id','password','createdAt','updatedAt']
+        },
+        where:{id:req.body.id}
+    })
     res.status(200).send(user)
 }
 
@@ -50,7 +55,7 @@ export const createUser = async (req:Request,res:Response)=>{
         res.cookie('jwt',createToken(user.id),{httpOnly:true,maxAge:MAX_AGE * 1000})
         await transaction.commit()
 
-        res.status(201).send(new ResponseHelper(`Sucessfully created user ${data.username}`,{id:user.id}))
+        res.status(201).send(new ResponseHelper(`Sucessfully created user ${data.username}`))
     } catch (error) {
         console.error(error)
         await transaction.rollback()
