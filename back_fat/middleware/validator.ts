@@ -22,6 +22,7 @@ export const loginSchema:Schema = {
 }
 
 export const userCreateSchema:Schema = {
+    id:{isEmpty:true},
     username:{
         trim: true,
         notEmpty: true,
@@ -34,17 +35,6 @@ export const userCreateSchema:Schema = {
             errorMessage: "Username has invalid length"
         },
     },
-    email:{
-        trim: true,
-        notEmpty: true,
-        escape: true,
-        isEmail: true,
-        isLength: {options:{min:3}},
-    }
-}
-
-export const userCreateSchema:Schema = {
-    username:loginSchema.username,
     email:loginSchema.email,
     password:loginSchema.password,
     birth_date:{
@@ -95,6 +85,7 @@ export const userCreateSchema:Schema = {
 }
 
 export const workoutCreateSchema:Schema = {
+    id:{isEmpty:true},
     name:{
         notEmpty: true,
         escape: true,
@@ -142,6 +133,7 @@ export const workoutCreateSchema:Schema = {
 }
 
 export const userUpdateSchema:Schema = {
+    id:{isEmpty:true},
     username: {optional:true,...userCreateSchema.username},
     email: {optional:true, ...loginSchema.email},
     password: {optional:true, ...loginSchema.password},
@@ -151,12 +143,18 @@ export const userUpdateSchema:Schema = {
 }
 
 export const goalUpdateSchema:Schema = {
+    id:{isEmpty:true},
     main_goal: {optional:true,...userCreateSchema.main_goal},
     baseline_activity: {optional:true,...userCreateSchema.baseline_activity},
     weight_goal: {optional:true,...userCreateSchema.weight_goal}
 }
 
 export const workoutUpdateSchema:Schema = {
+    id:{isEmpty:true},
+    workout_id:{
+        notEmpty:true,
+        isInt:true
+    },
     name: {optional:true,...workoutCreateSchema.name},
     type: {optional:true,...workoutCreateSchema.type},
     duration: {optional:true,...workoutCreateSchema.duration},

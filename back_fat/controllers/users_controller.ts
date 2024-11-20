@@ -12,7 +12,7 @@ import { createToken,MAX_AGE } from "../utils/jwt.ts";
 import { isMale } from "../utils/utils.ts";
 
 export const getUser = async (req:Request,res:Response)=>{
-    const user = await User.findOne({where:{id:req.params.id}})
+    const user = await User.findOne({where:{id:req.body.id}})
     res.status(200).send(user)
 }
 

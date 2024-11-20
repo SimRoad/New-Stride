@@ -6,7 +6,7 @@ import { Model } from "npm:sequelize";
 export const getPlans = async (req:Request,res:Response)=>{
     const plans:Model[] = await Plan.findAll({
         where: {
-            user_id: req.params.id
+            user_id: req.body.id
         }
     })
     res.status(200).send(plans)
