@@ -2,6 +2,7 @@ import { Request, Response } from "npm:@types/express";
 import User from "../models/users_model.ts";
 import bcrypt from "npm:bcrypt"
 import { createToken } from "../utils/jwt.ts";
+import { MAX_AGE } from "../utils/jwt.ts";
 
 export const loginController = async (req:Request,res:Response)=>{
     const {email, password} = req.body
@@ -9,7 +10,7 @@ export const loginController = async (req:Request,res:Response)=>{
     if(user){
         const auth = await bcrypt.compare(password,user.password)
         if(auth){
-            res.cookie('jwt',createToken(user.id),{httpOnly:true})
+            res.cookie('jwt',createToken(user.id),{httpOnly:true, maxAge: MAX_AGE * 1000})
             res.sendStatus(200)
             return
         }
