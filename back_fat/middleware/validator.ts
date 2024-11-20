@@ -2,6 +2,26 @@ import { validationResult, Result, Schema } from "npm:express-validator"
 import {Request, Response, NextFunction} from "npm:express"
 
 export const loginSchema:Schema = {
+    email:{
+        trim: true,
+        notEmpty: true,
+        escape: true,
+        isEmail: true,
+        isLength: {options:{min:3}},
+    },
+    password:{
+        notEmpty: true,
+        escape: true,
+        isLength: {
+            options:{
+                min:8, max: 32
+            },
+            errorMessage: "Password minimum length is 8 and maximum of 50"
+        }            
+    }
+}
+
+export const userCreateSchema:Schema = {
     username:{
         trim: true,
         notEmpty: true,
@@ -26,16 +46,7 @@ export const loginSchema:Schema = {
 export const userCreateSchema:Schema = {
     username:loginSchema.username,
     email:loginSchema.email,
-    password:{
-        notEmpty: true,
-        escape: true,
-        isLength: {
-            options:{
-                min:8, max: 32
-            },
-            errorMessage: "Password minimum length is 8 and maximum of 50"
-        }            
-    },
+    password:loginSchema.password,
     birth_date:{
         notEmpty: true,
         isInt: true
@@ -131,9 +142,9 @@ export const workoutCreateSchema:Schema = {
 }
 
 export const userUpdateSchema:Schema = {
-    username: {optional:true,...loginSchema.username},
+    username: {optional:true,...userCreateSchema.username},
     email: {optional:true, ...loginSchema.email},
-    password: {optional:true, ...userCreateSchema.password},
+    password: {optional:true, ...loginSchema.password},
     birth_date: {optional:true,...userCreateSchema.birth_date},
     height: {optional:true,...userCreateSchema.height},
     gender: {optional:false,...userCreateSchema.gender}
