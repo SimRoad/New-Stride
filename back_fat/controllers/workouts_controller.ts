@@ -29,7 +29,7 @@ export const createWorkout = async (req:Request,res:Response)=>{
             weight: weight,
             intensity:intensity
         })
-        res.status(201).send(new ResponseHelper(`Succesfully created user ${name}`,{id:workout.id,user_id}))
+        res.status(201).send(new ResponseHelper(`Succesfully created workout`,{id:workout.id,user_id}))
     } catch (error) {
         console.error(error)
         res.sendStatus(400)
