@@ -17,3 +17,7 @@ export const loginController = async (req:Request,res:Response)=>{
     }else
     res.sendStatus(401)
 }
+
+export const logoutController = (_req:Request,res:Response)=>{
+    res.clearCookie('jwt').sendStatus(200)
+}
