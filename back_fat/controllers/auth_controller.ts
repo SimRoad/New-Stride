@@ -9,10 +9,10 @@ export const loginController = async (req:Request,res:Response)=>{
     if(user){
         const auth = await bcrypt.compare(password,user.password)
         if(auth){
-            res.cookie('jwt',createToken(user.id))
-            res.send({id:user.id})
+            res.cookie('jwt',createToken(user.id),{httpOnly:true})
+            res.sendStatus(200)
             return
         }
-    }
+    }else
     res.sendStatus(401)
 }
