@@ -16,6 +16,7 @@
     "npm:bcrypt@^5.1.1": "5.1.1",
     "npm:cookie-parser@*": "1.4.7",
     "npm:express-rate-limit@*": "7.4.1_express@4.21.1",
+    "npm:express-validator@*": "7.2.0",
     "npm:express@*": "4.21.1",
     "npm:express@5.0.1": "5.0.1",
     "npm:jsonwebtoken@*": "9.0.2",
@@ -474,6 +475,13 @@
       "integrity": "sha512-KS3efpnpIDVIXopMc65EMbWbUht7qvTCdtCR2dD/IZmi9MIkopYESwyRqLgv8Pfu589+KqDqOdzJWW7AHoACeg==",
       "dependencies": [
         "express@4.21.1"
+      ]
+    },
+    "express-validator@7.2.0": {
+      "integrity": "sha512-I2ByKD8panjtr8Y05l21Wph9xk7kk64UMyvJCl/fFM/3CTJq8isXYPLeKW/aZBCdb/LYNv63PwhY8khw8VWocA==",
+      "dependencies": [
+        "lodash",
+        "validator"
       ]
     },
     "express@4.21.1": {
