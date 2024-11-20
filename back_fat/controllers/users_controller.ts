@@ -9,6 +9,7 @@ import { promptPlan } from "../utils/ai_helper.ts";
 import sequelize from "../db_setup.ts";
 import { ResponseHelper, updateMessage } from "../utils/response.ts";
 import { createToken,MAX_AGE } from "../utils/jwt.ts";
+import { isMale } from "../utils/utils.ts";
 
 export const getUser = async (req:Request,res:Response)=>{
     const user = await User.findOne({where:{id:req.params.id}})
@@ -25,7 +26,7 @@ export const createUser = async (req:Request,res:Response)=>{
             email: data.email,
             password: hashedPassword,
             birth_date: data.birth_date,
-            is_male: data.gender === "male",
+            is_male: isMale(data.gender),
             height: data.height,
             weight: data.weight
         },{
