@@ -10,7 +10,7 @@ Install Deno for windows<br>
 ```
 irm https://deno.land/install.ps1 | iex
 ```
-<i>Alternative Deno installations can be found at https://git-scm.com/downloads<br></i>
+<i>Alternative Deno installations can be found at https://docs.deno.com/runtime/getting_started/installation/<br></i>
 
 > [!WARNING] 
 > Don't forget to add deno in the path environment if it is not installed through powershell
