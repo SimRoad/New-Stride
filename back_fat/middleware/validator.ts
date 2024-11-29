@@ -22,7 +22,6 @@ export const loginSchema:Schema = {
 }
 
 export const userCreateSchema:Schema = {
-    id:{isEmpty:true},
     username:{
         trim: true,
         notEmpty: true,
@@ -44,7 +43,7 @@ export const userCreateSchema:Schema = {
     gender:{
         notEmpty: true,
         matches: {
-            options: /^(male|female)$/i,
+            options: /^(male|female)$/gi,
             errorMessage: "Must be either 'Male' or 'Female'"
         }
     },
@@ -63,16 +62,14 @@ export const userCreateSchema:Schema = {
     main_goal:{
         notEmpty: true,
         matches: {
-            options: /^(LOSE WEIGHT|MAINTAIN WEIGHT|GAIN MUSCLE)$/i,
-            negated: true,
+            options: /^(LOSE WEIGHT|MAINTAIN WEIGHT|GAIN MUSCLE)$/gi,
             errorMessage: "Only valid values are: 'LOSE WEIGHT', 'MAINTAIN WEIGHT', 'GAIN MUSCLE'"
         }
     },
     baseline_activity:{
         notEmpty: true,
         matches: {
-            options: /^(NOT ACTIVE|LIGHTLY ACTIVE|ACTIVE|VERY ACTIVE)$/i,
-            negated: true,
+            options: /^(NOT ACTIVE|LIGHTLY ACTIVE|ACTIVE|VERY ACTIVE)$/gi,
             errorMessage: "Only valid values are: 'NOT ACTIVE', 'LIGHTLY ACTIVE', 'ACTIVE', 'VERY ACTIVE'"
         }
     },
@@ -85,7 +82,6 @@ export const userCreateSchema:Schema = {
 }
 
 export const workoutCreateSchema:Schema = {
-    id:{isEmpty:true},
     name:{
         notEmpty: true,
         escape: true,
@@ -102,8 +98,7 @@ export const workoutCreateSchema:Schema = {
         notEmpty: true,
         escape: true,
         matches:{
-            options: /^(CARDIOVASCULAR,STRENGTH TRAINING)$/i,
-            negated: true,
+            options: /^(CARDIOVASCULAR,STRENGTH TRAINING)$/gi,
             errorMessage: "Only valid values are: 'CARDIOVASCULAR', 'STRENGTH TRAINING'"
         }
     },
@@ -133,7 +128,6 @@ export const workoutCreateSchema:Schema = {
 }
 
 export const userUpdateSchema:Schema = {
-    id:{isEmpty:true},
     username: {optional:true,...userCreateSchema.username},
     email: {optional:true, ...loginSchema.email},
     password: {optional:true, ...loginSchema.password},
@@ -143,14 +137,12 @@ export const userUpdateSchema:Schema = {
 }
 
 export const goalUpdateSchema:Schema = {
-    id:{isEmpty:true},
     main_goal: {optional:true,...userCreateSchema.main_goal},
     baseline_activity: {optional:true,...userCreateSchema.baseline_activity},
     weight_goal: {optional:true,...userCreateSchema.weight_goal}
 }
 
 export const workoutUpdateSchema:Schema = {
-    id:{isEmpty:true},
     workout_id:{
         notEmpty:true,
         isInt:true
