@@ -33,7 +33,8 @@ Goal.init({
         values: ['NOT ACTIVE','LIGHTLY ACTIVE','ACTIVE','VERY ACTIVE']
     },
     weight_goal:{
-        type: DataTypes.FLOAT
+        type: DataTypes.FLOAT,
+        allowNull: false
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
