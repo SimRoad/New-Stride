@@ -20,9 +20,10 @@ Clone the repository
 git clone https://github.com/LaurenceTest/New-Stride
 ```
 Establish your MYSQL Database<br>
-<!-- This needs more clarification -->
 
-<!-- This part might need more context-->
+> [!TIP]
+> If you don't have a database installed yet, you can install XAMPP or MySQL Workbench
+
 ### Required properties of .env
 - DB_NAME
     - The name of the database
@@ -38,3 +39,26 @@ Establish your MYSQL Database<br>
     - API Key for Gemini LLM
 - JWT_ACCESS_TOKEN
     - The key required to sign JWT
+
+
+## Endpoints
+**Users**
+- ``` GET /user```
+- ``` POST /user```
+- ``` PUT /user```
+<!-- List End -->
+**Plans**
+- ``` GET /user/plan```
+<!-- List End -->
+**Goals**
+- ``` GET /user/goal```
+- ``` POST /user/goal```
+<!-- List End -->
+**Workouts**
+- ``` GET /user/workout/{amount}```
+- ``` POST /user/workout```
+- ``` PUT /user/workout```
+<!-- List End -->
+**Auth**
+- ``` POST /auth/login```
+- ``` GET /auth/logout```
