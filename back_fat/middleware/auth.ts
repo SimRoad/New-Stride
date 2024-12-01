@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from "npm:@types/express";
 export const authToken = (req:Request, res:Response, next:NextFunction)=>{
     const token = req.cookies.jwt
     const accessToken = Deno.env.get("JWT_ACCESS_TOKEN")
-    if(token && accessToken){
+    if(req.url === '/user' && req.method === 'POST') next()
+    else if(token && accessToken){
         try {
             jwt.verify(token, accessToken)
             const decodedToken = jwt.decode(token)
