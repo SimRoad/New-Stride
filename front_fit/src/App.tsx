@@ -1,66 +1,44 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-
+import "./mainPage.css";
 function App() {
-  const [count, setCount] = useState(0);
-  const [cock, setCock] = useState(0);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <Poop
-        peak={"IM OVER HERE STROKING MY DICK I GOT LOTION ON MY DICK"}
-        poke={"yes.."}
-        cock={cock}
-        setCock={setCock}
-      />
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <><html lang="en">
+      <head>
+        <meta charSet="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <title>NewStride</title>
+        <link rel="stylesheet" href="styles.css"></link>
+      </head>
+      <body>
+        <header className="navbar">
+          <div className="logo">NewStride</div>
+          <nav className="nav-links">
+            <a href="#">How it Works</a>
+            <a href="#">Our Philosphy</a>
+          </nav>
+          <div className="sign-in">
+            <button>Sign in</button>
+          </div>
+        </header>
+        <main className="main-section">
+          <div className="text-content">
+            <p className="tagline">#1 Nutrition Tracking Web App</p>
+            <h1>Reach your goals with NewStride</h1>
+            <p className="description">
+              Build healthy habits with the exercise and calorie tracker
+            </p>
+            <div className="cta-button">
+              <button>START TODAY</button>
+            </div>
+          </div>
+          <div className= "image-content">
+            <img src="fitness-woman.png" alt="Fitness woman"></img>
+          </div>
+        </main>
+      </body>
+    </html></>
   );
 }
 
-function Poop(
-  { peak, poke, cock, setCock }: {
-    peak: string;
-    poke: string;
-    cock: number;
-    setCock: Dispatch<SetStateAction<number>>;
-  },
-) {
-  return (
-    <>
-      <p>{peak} {poke}</p>
-      <button
-        onClick={() =>
-          setCock((cock) => {
-            return cock < 100 ? cock + 1 : -20;
-          })}
-      >
-        Increase COck Size
-      </button>
-      <p>Current cock size: {cock} meters</p>
-    </>
-  );
-}
 
 export default App;
